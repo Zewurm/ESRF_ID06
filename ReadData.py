@@ -1,5 +1,5 @@
 """
-Written for Python 3.6
+Written for Pyjthon 3.6
 Author: Magnus Christensen
 Run Imports.py first (separated for speedier consequtive runs of this script from terminal)
 """

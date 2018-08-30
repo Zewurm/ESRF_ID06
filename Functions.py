@@ -1,3 +1,21 @@
+import fabio, time
+from os import listdir, path, makedirs
+import numpy as np
+from matplotlib import pyplot as plt
+from matplotlib import dates
+from matplotlib import rc
+from matplotlib import ticker
+from PIL import Image, ImageTk
+import png
+import tkinter as tk
+import calendar
+from datetime import date
+from datetime import datetime
+from datetime import timedelta
+import csv
+from tkinter.filedialog import askdirectory
+
+
 """
 Written for Python 3.6
 Author: Magnus Christensen
@@ -122,7 +140,7 @@ def loadFile(FolderPath, Index=0, DataType=None, Mute=False):
     else:
         """No files found"""
         return None, None
-def closeFiles(Files, mute=False):
+def closeFiles(Files, Mute=False):
     """
     This function closes a list of files.
 
@@ -1334,7 +1352,7 @@ def doStuff():
     """
     This function is just a sandbox to do whatever.
     """
-    imageBrowser()
+    # imageBrowser()
     # TestAllFolders2()
     # plotAllTemperatures()
     # FilePath = path.normpath(
@@ -1372,4 +1390,5 @@ def doStuff():
     """ CHECK IF ALL IMAGES ARE 16 BIT FROM ESRF.
     """
     # TestAllFolders()
+    return
 doStuff()

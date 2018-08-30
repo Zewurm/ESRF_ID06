@@ -18,28 +18,39 @@ master_folder = os.getcwd()
 # Load background images.
 background_folder = os.path.join(master_folder, 'Backgrounds')
 BG_files, BG_filenames = F.loadFolder(background_folder,
-                                      DataType='.edf', Mute=True)
+                                      DataType='0000.edf', Mute=True)
+# Load 1D data images.
+oneD_data_folder = os.path.join(master_folder, 'Mosa_chi_scan_RT')
+oneD_data_files, oneD_data_filenames = F.loadFolder(oneD_data_folder,
+                                                    DataType='2258.edf',
+                                                    Mute=True)
 
 # Convert background images to numpy.array
-rows_in_image = np.shape(BG_files[0].data)[0]
-cols_in_image = np.shape(BG_files[0].data)[1]
-files_loaded = len(BG_files)
-BG_array = np.zeros((rows_in_image, cols_in_image, files_loaded))
-for image in range(files_loaded):
-    BG_array[:,:,image] = BG_files[image].data
+BG_array = F.make_data_array(BG_files)
+# Convert 1D data images to numpy.array
+oneD_data_array = F.make_data_array(oneD_data_files)
 
+# For each pixel, find median value through all images.
 BG_median = np.median(BG_array, axis=2)
 
-print(np.shape(BG_median))
+# Get some values.
+ffz = F.getMotorValue(BG_files[0].header, 'ffz')
+ffx = 5000.0
+two_theta = np.arctan(ffz/ffx)*180/np.pi
+obpitch = F.getMotorValue(BG_files[0].header, 'obpitch')
 
-# Load 1D data images.
-# oneD_data_folder = os.path.join(master_folder, 'Mosa_chi_scan_RT')
-# oneD_data_files, oneD_data_filenames = F.loadFolder(oneD_data_folder,
-#                                       DataType='.edf', Mute=True)
+
+# Subtract background median from data images.
+# oneD_BG_sub = oneD_data_array - BG_median
+
+print(ffz, ffx, two_theta, obpitch)
+# for name in sorted(BG_files[0].header['motor_mne'].split()):
+#     print(name)
+
 
 # F.displayFiles(oneD_data_files, oneD_data_filenames,
 #                fps=2, Mute=False)
 
 F.closeFiles(Files=BG_files, Mute=True)
-# F.closeFiles(Files=oneD_data_files, Mute=True)
+F.closeFiles(Files=oneD_data_files, Mute=True)
 # loadFolder()

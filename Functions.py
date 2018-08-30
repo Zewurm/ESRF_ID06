@@ -1392,3 +1392,14 @@ def doStuff():
     # TestAllFolders()
     return
 doStuff()
+
+""" New functions """
+def make_data_array(file_list):
+    # Convert background images from list of fabio.image to numpy.array
+    rows_in_image = np.shape(file_list[0].data)[0]
+    cols_in_image = np.shape(file_list[0].data)[1]
+    files_loaded = len(file_list)
+    array = np.zeros((rows_in_image, cols_in_image, files_loaded))
+    for image in range(files_loaded):
+        array[:,:,image] = file_list[image].data
+    return array

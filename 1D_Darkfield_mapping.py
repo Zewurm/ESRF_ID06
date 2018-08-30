@@ -21,8 +21,16 @@ BG_files, BG_filenames = F.loadFolder(background_folder,
                                       DataType='.edf', Mute=True)
 
 # Convert background images to numpy.array
-BG_array = np.zeros((1,2,len(BG_filess)))
-print(np.shape(BG_array))
+rows_in_image = np.shape(BG_files[0].data)[0]
+cols_in_image = np.shape(BG_files[0].data)[1]
+files_loaded = len(BG_files)
+BG_array = np.zeros((rows_in_image, cols_in_image, files_loaded))
+for image in range(files_loaded):
+    BG_array[:,:,image] = BG_files[image].data
+
+BG_median = np.median(BG_array, axis=2)
+
+print(np.shape(BG_median))
 
 # Load 1D data images.
 # oneD_data_folder = os.path.join(master_folder, 'Mosa_chi_scan_RT')
@@ -32,5 +40,6 @@ print(np.shape(BG_array))
 # F.displayFiles(oneD_data_files, oneD_data_filenames,
 #                fps=2, Mute=False)
 
-F.closeFiles(Files=files)
+F.closeFiles(Files=BG_files, Mute=True)
+# F.closeFiles(Files=oneD_data_files, Mute=True)
 # loadFolder()
